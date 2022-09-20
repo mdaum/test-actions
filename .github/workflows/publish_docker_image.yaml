@@ -12,20 +12,18 @@ on:
         description: "Name of package to publish to DockerHub"
         required: true
         type: string
-      docker-username:
-        description: "Docker username to auth and publish"
-        required: true
-        type: string
-      docker-password:
-        description: "Docker pw to auth and publish"
-        required: true
-        type: string
       push-to-registry:
         description: "Determines if the built image should be pushed to the registry (default is `false`)"
         required: false
         default: false
         type: boolean
-
+    secrets:
+      DOCKER_USERNAME:
+        description: "Docker username to auth and publish"
+        required: true
+      DOCKER_PASSWORD:
+        description: "Docker pw to auth and publish"
+        required: true
 jobs:
   all:
     name: All
@@ -56,8 +54,8 @@ jobs:
       name: Login to DockerHub
       uses: docker/login-action@v2
       with:
-        username: ${{ inputs.docker-username }}
-        password: ${{ inputs.docker-password }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     -
       name: Build and push
       uses: docker/build-push-action@v3
